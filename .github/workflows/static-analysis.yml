@@ -1,0 +1,41 @@
+name: "static analysis"
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    name: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.tflint.d/plugins
+          key: tflint-${{ hashFiles('.tflint.hcl') }}
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ~1.13
+
+      - uses: terraform-linters/setup-tflint@ae78205cfffec9e8d93fd2b3115c7e9d3166d4b6 # v5.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: make fmt
+
+      - run: make validate
+
+      - run: make tflint
+
+      - uses: aquasecurity/trivy-action@0.33.1
+        with:
+          scan-type: 'config'
+          hide-progress: false
+          trivy-config: trivy.yaml
