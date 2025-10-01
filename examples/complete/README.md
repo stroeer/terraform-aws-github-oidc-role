@@ -31,7 +31,7 @@ Note that this example may create resources which cost money. Run `terraform des
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_oidc"></a> [oidc](#module\_oidc) | ../../ | n/a |
+| <a name="module_oidc_role"></a> [oidc\_role](#module\_oidc\_role) | ../../ | n/a |
 
 ## Resources
 

@@ -15,7 +15,7 @@ Before using this module, you must add the GitHub OIDC identity provider to your
 
 ### Adding GitHub OIDC Provider
 
-You can add the provider via AWS CLI:
+You can add the provider via Terraform or AWS CLI:
 
 ```bash
 aws iam create-open-id-connect-provider \
@@ -27,24 +27,31 @@ Or follow the [official GitHub documentation](https://docs.github.com/en/actions
 
 ## Usage
 
-### Basic Example
+### Example
+
+see [complete example](./examples/complete) for more details
 
 ```terraform
-module "github_oidc_role" {
-  source = "registry.terraform.io/stroeer/github-oidc-role/aws"
+resource "aws_iam_openid_connect_provider" "github" {
+  client_id_list = ["sts.amazonaws.com"]
+  url            = "https://token.actions.githubusercontent.com"
+}
 
-  github_repository = "myorg/my-app"
+module "oidc_role" {
+  source     = "registry.terraform.io/stroeer/github-oidc-role/aws"
+  depends_on = [aws_iam_openid_connect_provider.github]
 
-  # Grant access to S3 buckets/prefixes
-  s3_prefixes = [
-    "my-deployment-bucket/my-app",
-    "shared-assets-bucket/static-files"
+  github_repository = "stroeer/example"
+  role_name         = "github-ci-role"
+  github_refs       = ["main", "develop"]
+
+  ecr_repositories = [
+    "example-repository"
   ]
 
-  # Grant access to ECR repositories
-  ecr_repositories = [
-    "my-app",
-    "my-app-nginx"
+  s3_prefixes = [
+    "example-bucket",
+    "other-bucket/example-folder"
   ]
 }
 ```
@@ -91,6 +98,18 @@ jobs:
           docker tag my-app:latest $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
           docker push $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
 ```
+
+## How do I contribute to this module?
+
+Contributions are very welcome! Check out the [Contribution Guidelines](https://github.com/stroeer/terraform-aws-github-oidc-role/blob/main/CONTRIBUTING.md) for instructions.
+
+## How is this module versioned?
+
+This Module follows the principles of [Semantic Versioning](http://semver.org/). You can find each new release in the [releases page](../../releases).
+
+During initial development, the major version will be 0 (e.g., `0.x.y`), which indicates the code does not yet have a
+stable API. Once we hit `1.0.0`, we will make every effort to maintain a backwards compatible API and use the MAJOR,
+MINOR, and PATCH versions on each release to indicate any incompatibilities.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
