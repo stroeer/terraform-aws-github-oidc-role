@@ -18,7 +18,7 @@ data "aws_iam_policy_document" "github_actions_assume" {
     actions = ["sts:AssumeRoleWithWebIdentity"]
 
     condition {
-      test     = "StringEquals"
+      test     = "StringLike"
       values   = local.allowed_subs
       variable = "token.actions.githubusercontent.com:sub"
     }

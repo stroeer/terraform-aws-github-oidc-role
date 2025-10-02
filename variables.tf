@@ -19,7 +19,7 @@ variable "github_repository" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 variable "github_refs" {
-  description = "Name of the refs (e.g. branches) on which the action will run."
+  description = "Name of the refs (e.g. branches) on which the action will run. Can contain '*' wildcards."
   type        = list(string)
   default     = ["main"]
   nullable    = false
