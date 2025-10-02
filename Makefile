@@ -52,7 +52,10 @@ tflint: ## Runs tflint on all Terraform files
 .PHONY: trivy
 trivy: ## Runs trivy on all Terraform files
 	@echo "+ $@"
-	@trivy config -c trivy.yaml .
+	@for s in $(STACKS); do \
+		echo "trivy $$s"; \
+		trivy config -c $(ROOT_DIR)/trivy.yaml $$s; \
+	done;
 
 bump ::
 	@echo bumping version from $(VERSION_TAG) to $(NEXT_TAG)
