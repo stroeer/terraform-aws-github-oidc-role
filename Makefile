@@ -52,7 +52,7 @@ tflint: ## Runs tflint on all Terraform files
 .PHONY: trivy
 trivy: ## Runs trivy on all Terraform files
 	@echo "+ $@"
-	@trivy config  --exit-code 1 --severity HIGH --tf-exclude-downloaded-modules .
+	@trivy config -c trivy.yaml .
 
 bump ::
 	@echo bumping version from $(VERSION_TAG) to $(NEXT_TAG)
@@ -99,7 +99,7 @@ release: check-bump check-git-branch bump ## Releases a new module version on Gi
 		exit 0 ; 																		\
 	fi;
 	@gh release create $(NEXT_TAG) --generate-notes
-	@echo "GitHub release created successfully for tag $(NEXT_TAG) at: https://github.com/stroeer/terraform-aws-ecs-fargate/releases/tag/$(NEXT_TAG)"
+	@echo "GitHub release created successfully for tag $(NEXT_TAG) at: https://github.com/stroeer/terraform-aws-github-oidc-role/releases/tag/$(NEXT_TAG)"
 
 help: ## Display this help screen
 	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
