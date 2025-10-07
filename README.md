@@ -1,6 +1,6 @@
 # Terraform AWS GitHub OIDC Role
 
-![CI](https://github.com/stroeer/terraform-aws-github-oidc-role/workflows/static%20analysis/badge.svg) [![Terraform Registry](https://img.shields.io/badge/Terraform%20Registry-0.0.1-blue.svg)](https://registry.terraform.io/modules/stroeer/github-oidc-role/aws/0.0.1) ![Terraform Version](https://img.shields.io/badge/Terraform-1.5.7+-green.svg)
+![CI](https://github.com/stroeer/terraform-aws-github-oidc-role/workflows/static%20checks/badge.svg) [![Terraform Registry](https://img.shields.io/badge/Terraform%20Registry-0.0.1-blue.svg)](https://registry.terraform.io/modules/stroeer/github-oidc-role/aws/0.0.1) ![Terraform Version](https://img.shields.io/badge/Terraform-1.5.7+-green.svg)
 
 A Terraform module that creates an AWS IAM role for secure, keyless authentication from GitHub Actions using [OpenID Connect (OIDC)](https://docs.github.com/en/actions/concepts/security/openid-connect). This eliminates the need to store long-lived AWS credentials in GitHub secrets.
 
@@ -150,7 +150,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_ecr_repositories"></a> [ecr\_repositories](#input\_ecr\_repositories) | ECR repository names that the role can push to. If not set, no ECR access will be granted. | `list(string)` | `[]` | no |
-| <a name="input_github_refs"></a> [github\_refs](#input\_github\_refs) | Name of the refs (e.g. branches) on which the action will run. | `list(string)` | <pre>[<br/>  "main"<br/>]</pre> | no |
+| <a name="input_github_refs"></a> [github\_refs](#input\_github\_refs) | Name of the refs (e.g. branches) on which the action will run. Can contain '*' wildcards. | `list(string)` | <pre>[<br/>  "main"<br/>]</pre> | no |
 | <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | Name of the GitHub repository that will run the action, including repository owner (e.g. moritzzimmer/terraform-aws-lambda) | `string` | n/a | yes |
 | <a name="input_role_name"></a> [role\_name](#input\_role\_name) | Name of the IAM role to create. If not set github-actions-$github\_repository-$region will be used | `string` | `""` | no |
 | <a name="input_s3_prefixes"></a> [s3\_prefixes](#input\_s3\_prefixes) | S3 prefixes (bucket name + key) that the role can write/read to/from. E.g. ci-eu-central-1/foo. If not set, no S3 access will be granted. | `list(string)` | `[]` | no |

@@ -6,11 +6,11 @@ repos:
       - id: terraform_validate
         args: ['--envs=AWS_REGION="eu-west-1"']
       - id: terraform_tflint
+        args:
+          - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl
       - id: terraform_trivy
         args:
-          - --args=--tf-exclude-downloaded-modules
-          - --args=--skip-dirs "**/.terraform/**/*"
-          - --args=--severity=HIGH,CRITICAL
+          - --args=--config=__GIT_WORKING_DIR__/trivy.yaml
       - id: terraform_docs
         args:
           - '--args=--lockfile=false'
