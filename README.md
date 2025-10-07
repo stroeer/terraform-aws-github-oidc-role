@@ -1,6 +1,6 @@
 # Terraform AWS GitHub OIDC Role
 
-![CI](https://github.com/stroeer/terraform-aws-github-oidc-role/workflows/static%20checks/badge.svg) [![Terraform Registry](https://img.shields.io/badge/Terraform%20Registry-0.0.1-blue.svg)](https://registry.terraform.io/modules/stroeer/github-oidc-role/aws/0.0.1) ![Terraform Version](https://img.shields.io/badge/Terraform-1.5.7+-green.svg)
+![CI](https://github.com/stroeer/terraform-aws-github-oidc-role/workflows/static%20checks/badge.svg) [![Terraform Registry](https://img.shields.io/badge/Terraform%20Registry-0.0.1-blue.svg)](https://registry.terraform.io/modules/stroeer/github-oidc-role/aws/0.1.0) ![Terraform Version](https://img.shields.io/badge/Terraform-1.5.7+-green.svg)
 
 A Terraform module that creates an AWS IAM role for secure, keyless authentication from GitHub Actions using [OpenID Connect (OIDC)](https://docs.github.com/en/actions/concepts/security/openid-connect). This eliminates the need to store long-lived AWS credentials in GitHub secrets.
 
