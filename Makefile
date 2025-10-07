@@ -20,42 +20,14 @@ NEXT_VERSION		:= $(shell echo $(MAJOR).$(MINOR).$$(($(PATCH)+1)))
 endif
 NEXT_TAG 			:= v$(NEXT_VERSION)
 
-STACKS = $(shell find . -not -path "*/\.*" -iname "*.tf" | sed -E "s|/[^/]+$$||" | sort --unique)
-ROOT_DIR := $(shell pwd)
-
-all: fmt validate tflint trivy
-
-.PHONY: fmt
-fmt: ## Checks config files against canonical format
+.PHONY: check
+check: ## Runs pre-commit hooks against all files
 	@echo "+ $@"
-	@terraform fmt -check=true -recursive
-
-.PHONY: validate
-validate: ## Validates the Terraform files
-	@echo "+ $@"
-	@for s in $(STACKS); do \
-		echo "validating $$s"; \
-		terraform -chdir=$$s init -backend=false > /dev/null; \
-		terraform -chdir=$$s validate || exit 1 ;\
-    done;
-
-.PHONY: tflint
-tflint: ## Runs tflint on all Terraform files
-	@echo "+ $@"
-	@tflint --init
-	@for s in $(STACKS); do \
-		echo "tflint $$s"; \
-		terraform -chdir=$$s init -backend=false -lockfile=readonly > /dev/null; \
-		tflint --chdir=$$s --format=compact --config=$(ROOT_DIR)/.tflint.hcl || exit 1;\
-	done;
-
-.PHONY: trivy
-trivy: ## Runs trivy on all Terraform files
-	@echo "+ $@"
-	@for s in $(STACKS); do \
-		echo "trivy $$s"; \
-		trivy config -c $(ROOT_DIR)/trivy.yaml $$s; \
-	done;
+	@command -v pre-commit >/dev/null 2>&1 || { \
+		echo "pre-commit not installed. Install via 'pip install pre-commit' or 'brew install pre-commit'."; \
+		exit 1; \
+	}
+	@pre-commit run --all-files
 
 bump ::
 	@echo bumping version from $(VERSION_TAG) to $(NEXT_TAG)
