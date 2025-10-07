@@ -45,7 +45,7 @@ module "oidc_role" {
 
   github_repository = "stroeer/example"
   role_name         = "github-ci-role"
-  github_refs       = ["main", "develop"]
+  github_refs       = ["main", "develop", "release/*"]
 
   ecr_repositories = [
     "example-repository"
