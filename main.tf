@@ -1,6 +1,6 @@
 locals {
   role_name           = var.role_name != "" ? var.role_name : "github-actions-${split("/", var.github_repository)[1]}-${data.aws_region.current.region}"
-  allowed_subs        = [for ref in var.github_refs : "repo:${var.github_repository}:ref/refs/heads/${ref}"]
+  allowed_subs        = [for ref in var.github_refs : "repo:${var.github_repository}:ref:refs/heads/${ref}"]
   s3_bucket_name_arns = [for prefix in var.s3_prefixes : "arn:aws:s3:::${split("/", prefix)[0]}"]
   s3_prefix_arns      = [for prefix in var.s3_prefixes : "arn:aws:s3:::${prefix}/*"]
   ecr_repository_arns = [for repo in var.ecr_repositories : "arn:aws:ecr:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:repository/${repo}"]
