@@ -43,9 +43,10 @@ module "oidc_role" {
   source     = "registry.terraform.io/stroeer/github-oidc-role/aws"
   depends_on = [aws_iam_openid_connect_provider.github]
 
-  github_repository = "stroeer/example"
-  role_name         = "github-ci-role"
-  github_refs       = ["main", "develop", "release/*"]
+  github_repository   = "stroeer/example"
+  role_name           = "github-ci-role"
+  github_refs         = ["main", "develop", "release/*"]
+  github_environments = ["staging"]
 
   ecr_repositories = [
     "example-repository"
@@ -150,6 +151,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_ecr_repositories"></a> [ecr\_repositories](#input\_ecr\_repositories) | ECR repository names that the role can push to. If not set, no ECR access will be granted. | `list(string)` | `[]` | no |
+| <a name="input_github_environments"></a> [github\_environments](#input\_github\_environments) | Name of the environments on which the action can run. Can contain '*' wildcards. | `list(string)` | `[]` | no |
 | <a name="input_github_refs"></a> [github\_refs](#input\_github\_refs) | Name of the refs (e.g. branches) on which the action will run. Can contain '*' wildcards. | `list(string)` | <pre>[<br/>  "main"<br/>]</pre> | no |
 | <a name="input_github_repository"></a> [github\_repository](#input\_github\_repository) | Name of the GitHub repository that will run the action, including repository owner (e.g. moritzzimmer/terraform-aws-lambda) | `string` | n/a | yes |
 | <a name="input_role_name"></a> [role\_name](#input\_role\_name) | Name of the IAM role to create. If not set github-actions-$github\_repository-$region will be used | `string` | `""` | no |
