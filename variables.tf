@@ -25,6 +25,13 @@ variable "github_refs" {
   nullable    = false
 }
 
+variable "github_environments" {
+  description = "Name of the environments on which the action can run. Can contain '*' wildcards."
+  type        = list(string)
+  default     = []
+  nullable    = false
+}
+
 variable "role_name" {
   description = "Name of the IAM role to create. If not set github-actions-$github_repository-$region will be used"
   type        = string

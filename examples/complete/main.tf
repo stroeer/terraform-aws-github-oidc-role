@@ -7,9 +7,10 @@ module "oidc_role" {
   source     = "../../"
   depends_on = [aws_iam_openid_connect_provider.github]
 
-  github_repository = "stroeer/example"
-  role_name         = "github-ci-role"
-  github_refs       = ["main", "develop", "release/*"]
+  github_repository   = "stroeer/example"
+  role_name           = "github-ci-role"
+  github_refs         = ["main", "develop", "release/*"]
+  github_environments = ["staging"]
 
   ecr_repositories = [
     "example-repository"
