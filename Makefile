@@ -20,6 +20,7 @@ NEXT_VERSION		:= $(shell echo $(MAJOR).$(MINOR).$$(($(PATCH)+1)))
 endif
 NEXT_TAG 			:= v$(NEXT_VERSION)
 
+
 .PHONY: check
 check: ## Runs pre-commit hooks against all files
 	@echo "+ $@"
@@ -27,7 +28,13 @@ check: ## Runs pre-commit hooks against all files
 		echo "pre-commit not installed. Install via 'pip install pre-commit' or 'brew install pre-commit'."; \
 		exit 1; \
 	}
-	@pre-commit run --all-files
+	@pre-commit run --all-files --verbose
+
+.PHONY: wiz
+wiz: ## Runs wizcli scan on repo or specific stack (make wiz STACK=examples/complete)
+	@echo "+ $@"
+	@command -v wizcli >/dev/null 2>&1 || { echo >&2 "Please install wizcli: 'brew install --cask wizcli'"; exit 1; }
+	@wizcli scan dir '$(or $(STACK),.)' --use-device-code --name "terraform-aws-github-oidc-role" -p "$${WIZCLI_POLICY:-Buzz IaC Policy}" --disabled-scanners=AIModels,Malware --by-policy-hits=BLOCK --no-publish --ignore-comments
 
 bump ::
 	@echo bumping version from $(VERSION_TAG) to $(NEXT_TAG)
